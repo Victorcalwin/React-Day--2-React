@@ -1,10 +1,14 @@
-import React,{useState} from 'react';
+import React,{useState, useContext} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {useNavigate} from 'react-router-dom';
 import './Createstudent.css';
+import {StudentContext} from '../App';
 
-function Createstudent(props) {
+function Createstudent() {
+
+  let context = useContext(StudentContext);
+ 
  
   let [name, setName] = useState("");
   let [email, setEmail] = useState("");
@@ -19,9 +23,9 @@ function Createstudent(props) {
       mobile,
       batch
     }
-    let students = [...props.data.students];
+    let students = [...context.students];
     students.push(data)
-    props.data.useStudents(students)
+    context.useStudents(students)
       navigate('/dashboard');
   }
   return <>

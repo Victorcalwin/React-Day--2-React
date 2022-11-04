@@ -3,10 +3,17 @@ import Dashboard from './Components/Dashboard';
 import { BrowserRouter, Routes,Route } from 'react-router-dom';
 import Createstudent from './Components/Createstudent';
 import Editstudent from './Components/Editstudent';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
+import Ref from './Components/Ref';
+import Memo from './Components/Memo';
+import Reduce from './Components/Reduce';
+
+export const StudentContext = React.createContext();
 
 function App() {
+
+
   let data ={
     monthly: "Rs. 40,000",
     annual: "Rs. 4,80,000",
@@ -39,11 +46,17 @@ function App() {
   
     <BrowserRouter>
       <Sidebar/>
+        <StudentContext.Provider value = {{data, students, useStudents}}>
       <Routes>
-        <Route path = 'dashboard' element = {<Dashboard data={{data, students, useStudents}}/>}/>
-        <Route path = 'create-student' element = {<Createstudent data = {{students, useStudents}}/>}/>
-        <Route path = 'edit-student/:id' element = {<Editstudent data = {{students, useStudents}}/>}/>
+      <Route path='dashboard' element={<Dashboard/>}>
+                  <Route path='ref' element={<Ref/>}/>
+                  <Route path='memo' element={<Memo/>}/>
+                  <Route path='reduce' element={<Reduce/>}/>
+              </Route>
+        <Route path = 'create-student' element = {<Createstudent/>}/>
+        <Route path = 'edit-student/:ee/:vic' element = {<Editstudent/>}/>
       </Routes>
+      </StudentContext.Provider>
     </BrowserRouter>
     </div>
     </>

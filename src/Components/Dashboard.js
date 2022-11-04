@@ -1,14 +1,19 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import {useNavigate} from 'react-router-dom';
+import {Outlet,useNavigate} from 'react-router-dom';
+import {StudentContext} from '../App';
 
-function Dashboard(props) {
+
+function Dashboard() {
+
+    let context = useContext(StudentContext);
+
     let navigate = useNavigate();
     let deleteFunc = (i)=>{
-        let students = [...props.data.students];
+        let students = [...context.students];
         students.splice(i,1);
-        props.data.useStudents(students)
+        context.useStudents(students)
     }
    
   return <>
@@ -39,7 +44,7 @@ function Dashboard(props) {
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Earnings (Monthly)</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">${props.data.data.monthly}</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">${context.data.monthly}</div>
                             </div>
                             <div className="col-auto">
                                 <i className="fas fa-calendar fa-2x text-gray-300"></i>
@@ -57,7 +62,7 @@ function Dashboard(props) {
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     Earnings (Annual)</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">${[props.data.data.annual]}</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">${[context.data.annual]}</div>
                             </div>
                             <div className="col-auto">
                                 <i className="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -77,12 +82,12 @@ function Dashboard(props) {
                                 </div>
                                 <div className="row no-gutters align-items-center">
                                     <div className="col-auto">
-                                        <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{props.data.data.task}%</div>
+                                        <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{context.data.task}%</div>
                                     </div>
                                     <div className="col">
                                         <div className="progress progress-sm mr-2">
                                             <div className="progress-bar bg-info" role="progressbar"
-                                                style={{width: props.data.data.task, "ariaValuenow ": props.data.data.task, "ariaValuemin":"0",
+                                                style={{width: context.data.task, "ariaValuenow ": context.data.task, "ariaValuemin":"0",
                                                 "ariaValuemax":"100"}}></div>
                                         </div>
                                     </div>
@@ -104,7 +109,7 @@ function Dashboard(props) {
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Pending Requests</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">{props.data.data.pending}</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">{context.data.pending}</div>
                             </div>
                             <div className="col-auto">
                                 <i className="fas fa-comments fa-2x text-gray-300"></i>
@@ -131,7 +136,7 @@ function Dashboard(props) {
   </thead>
   <tbody>
     {
-        props.data.students.map((e,i)=>{
+        context.students.map((e,i)=>{
             return <tr key={i}>
                 <td>{i}</td>
                 <td>{e.name}</td>
@@ -139,7 +144,7 @@ function Dashboard(props) {
                 <td>{e.mobile}</td>
                 <td>{e.batch}</td>
                 <td>
-                   <Button varient = "primary" onClick={()=>navigate(`/edit-student/${i}`)}>Edit</Button>
+                   <Button varient = "primary" onClick={()=>navigate(`/edit-student/${i}/${e.name}`)}>Edit</Button>
                     &nbsp;&nbsp;
                     <Button variant="danger" onClick= {()=>deleteFunc(i)}>Delete</Button>
                 </td>
@@ -147,6 +152,12 @@ function Dashboard(props) {
         })   }
   </tbody>
 </Table>
+&nbsp;&nbsp;
+        <Button varient ="primary" onClick= {()=>navigate('reduce')}>useReduce</Button> &nbsp;&nbsp;&nbsp;
+        <Button varient ="primary" onClick= {()=>navigate('ref')}>useRef</Button>&nbsp;&nbsp;&nbsp;
+        <Button varient ="primary" onClick= {()=>navigate('memo')}>useMemo</Button>&nbsp;&nbsp;&nbsp;
+
+        <Outlet/>
 </div>
 
 {/* <!-- Footer --> */}
